@@ -54,7 +54,7 @@
     "@capacitor/core": ">=6.0.0"
   },
   "devDependencies": {
-    "@capacitor/core": "^6.2.0",
+    "@capacitor/core": "^8.6.2",
     "@types/node": "^22.15.0",
     "tsx": "^4.19.0",
     "typescript": "^5.9.3"
