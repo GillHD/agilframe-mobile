@@ -1,5 +1,7 @@
 # @agil/calls-react-native
 
+**Русский** · [English](README.en.md)
+
 React Native-обёртка AgilFrame для iOS и Android: `<AgilCall />` открывает
 hosted-виджет `/embed.html` в WebView, прокидывает события через
 `postMessage`-мост и управляет нативными разрешениями камеры/микрофона.
@@ -20,7 +22,7 @@ hosted-виджет `/embed.html` в WebView, прокидывает событ�
 | `src/permissions.ts` | Android runtime-разрешения, iOS system prompt, открытие Settings |
 | `src/types.ts` | публичные TS-типы |
 | `expo/withAgilCall.cjs` | Expo config plugin: Info.plist + AndroidManifest |
-| `test/` | unit-тесты URL/моста/рендер-хелпера (52 теста, Node `tsx --test`) |
+| `test/` | Модульные тесты URL, моста и рендеринга (`tsx --test` в Node.js) |
 
 ## Требования
 
@@ -50,6 +52,9 @@ npx expo install react-native-webview
 явно** (см. команду выше).
 
 ## Быстрый старт
+
+Пример использует `useSafeAreaInsets()` из `react-native-safe-area-context`.
+Подключите эту библиотеку в приложении, если хотите передавать отступы виджету.
 
 ```tsx
 import { useRef } from 'react';
@@ -320,9 +325,9 @@ WebView, но кастомные usage strings применяются тольк
 
 ```bash
 npm run typecheck -w @agil/calls-react-native   # tsc --noEmit (src + test)
-npm test -w @agil/calls-react-native            # 52 unit-тест URL/bridge/render
+npm test -w @agil/calls-react-native            # тесты URL, моста и рендеринга
 npm run build -w @agil/calls-react-native       # dist/ (ESM) + dist/cjs/ (CJS)
-npm pack --dry-run                              # состав публикуемого пакета
+npm pack --dry-run -w @agil/calls-react-native  # состав публикуемого пакета
 ```
 
 `dist/index.js` — ESM, `dist/cjs/index.js` — CommonJS (Metro/старые резолверы),
@@ -332,9 +337,9 @@ npm pack --dry-run                              # состав публикуе�
 
 ```bash
 npm run build -w @agil/calls-react-native
-# внутренний реестр (проприетарная лицензия репозитория):
+# внутренний реестр:
 npm publish -w @agil/calls-react-native --access restricted
-# публичный реестр — только если это разрешено лицензией: --access public
+# публичный реестр — если это разрешено применимыми условиями лицензии: --access public
 ```
 
 Перед публикацией: поднимите `version` в `package.json`, обновите `version` в
@@ -378,5 +383,5 @@ npm publish -w @agil/calls-react-native --access restricted
 | `navigation-blocked` | Ссылка ведёт на другой origin; добавьте его в `allowedOrigins` или обработайте `onExternalLink`. |
 | Нет звука в фоне | Ограничение WebView/ОС; нужен нативный аудио-стек/CallKit. |
 
-Полное руководство по интеграции, матрица проверок и ограничения:
-`agil/core/docs/mobile.md` в репозитории AgilFrame.
+Полное руководство по интеграции, матрица проверок и ограничения.
+[Мобильная интеграция](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/mobile.md)

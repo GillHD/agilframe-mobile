@@ -1,4 +1,6 @@
-# AGIL Mobile
+# AgilFrame Mobile SDK packages
+
+[Repository overview](../../README.en.md) · [Обзор на русском](../../README.md)
 
 Native and hybrid wrappers around the hosted widget (`/embed.html`). Call media
 runs in the system WebView; the wrapper only builds a safe URL and bridges
@@ -34,7 +36,7 @@ Native wrappers must stay on the published embed contract:
 WebView shells support up to 200 participants without forwarding the widget's
 full `participantIds` array on every tick: the SDK keeps the set and exposes one
 bounded snapshot plus deltas, and deduplicates reconnect transitions. See
-[`agil/core/docs/webview-large-rooms.md`](../core/docs/webview-large-rooms.md).
+[Large-room WebView behavior](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/webview-large-rooms.md).
 
 Static native checks (no Xcode/Android toolchain required):
 

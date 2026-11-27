@@ -1,5 +1,7 @@
 # @agil/calls-capacitor
 
+Русский · [English](https://github.com/GillHD/agilframe-mobile/blob/main/agil/mobile/capacitor/README.en.md)
+
 Capacitor-плагин AgilFrame для iOS, Android и Web: `openCall()` открывает
 hosted-виджет `/embed.html` во встроенном WKWebView/Android WebView (или в
 системном браузере), прокидывает события через `AgilBridge` и управляет
@@ -22,7 +24,7 @@ hosted-виджет `/embed.html` во встроенном WKWebView/Android We
 | `ios/Sources/AgilCallsPlugin` | Swift-плагин и `AgilCallViewController` (WKWebView) |
 | `android/src/main/java/com/agil/calls` | Kotlin-плагин, Activity и bridge |
 | `AgilCalls.podspec`, `android/build.gradle` | сборка нативных таргетов |
-| `test/url.test.ts`, `test/bridge.test.ts`, `test/native-source.test.ts` | 33 JS-теста URL/моста и нативных guard'ов |
+| `test/` | Тесты построения URL, обработки событий, больших комнат и проверок нативного кода |
 
 ## Требования
 
@@ -36,8 +38,20 @@ hosted-виджет `/embed.html` во встроенном WKWebView/Android We
 
 ## Установка
 
+Соберите пакет из исходников. Следующие команды выполняются в корне
+клона `agilframe-mobile`.
+
 ```bash
-npm install @agil/calls-capacitor
+npm ci
+npm run build --workspace @agil/calls-capacitor
+npm pack --workspace @agil/calls-capacitor
+```
+
+В корне вашего Capacitor-приложения установите полученный архив. Замените
+пример пути на путь к архиву, который вывела команда `npm pack`.
+
+```bash
+npm install /path/to/agilframe-mobile/agil-calls-capacitor-0.1.0.tgz
 npx cap sync
 ```
 
@@ -292,7 +306,7 @@ network-security-config) в манифесте приложения.
 cd agil/mobile/capacitor
 
 npm run typecheck   # tsc --noEmit (src + test), нужен @capacitor/core
-npm test            # 33 unit-теста (Node tsx --test)
+npm test            # модульные тесты (Node tsx --test)
 npm run build       # dist/ (ESM) + dist/cjs/ (CommonJS)
 npm pack --dry-run  # состав публикуемого пакета
 ```
@@ -316,12 +330,10 @@ npx cap sync android
 npx cap open android   # Android Studio: build/run
 ```
 
-> **Проверено в этом окружении:** `tsc --noEmit` в изолированном проекте с
-> `@capacitor/core@6` — без ошибок; `tsc -p tsconfig.build.json` собирает
-> `dist/`; `tsx --test` — **33/33 passed**. Нативные модули (Swift/Kotlin/Gradle/
-> podspec) не компилировались: здесь нет macOS/Xcode и Android SDK. Мобильные
-> JS-тесты поднимают URL/валидацию/парсер и статически проверяют нативные
-> guard'ы без Capacitor runtime.
+Локальная проверка с `@capacitor/core@6` прошла проверку типов и **42 теста**.
+JS-тесты проверяют построение URL, валидацию, обработку событий и выбранные
+проверки Swift и Kotlin без запуска Capacitor. Сборка и запуск нативных
+модулей требуют инструментов соответствующей платформы.
 
 ## Ограничения
 

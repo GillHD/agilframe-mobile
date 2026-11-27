@@ -1,13 +1,15 @@
-# AgilFrame — Android SDK (`agil-calls`)
+# AgilFrame Android SDK (`agil-calls`)
 
-Tier-1 Android module for the hosted AgilFrame widget: a native `AgilCallView`
-around `/embed.html`, typed events/commands, a hardened origin guard and a small
-join API. **WebView integration, not native WebRTC.**
+[Mobile SDK packages](../README.md) · [Обзор Mobile SDK](https://github.com/GillHD/agilframe-mobile)
+
+The Android SDK provides a native `AgilCallView` that opens the hosted AgilFrame
+widget at `/embed.html` in a WebView. It includes typed events and commands,
+origin checks, and a client for the join API.
 
 - Core library: `com.agilcalls:agil-calls:0.1.0` (Kotlin, minSdk 26, compileSdk 35)
 - Optional Compose wrapper: `com.agilcalls:agil-calls-compose:0.1.0`
 - Example app: `:example`
-- Full guide: [`agil/core/docs/android-sdk.md`](../../core/docs/android-sdk.md)
+- [Android integration guide](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/android-sdk.md)
 
 ## Quick start
 
@@ -130,7 +132,7 @@ Set `JAVA_HOME` to JDK 17 and `ANDROID_HOME`/`sdk.dir` to an SDK with platform
 > and 68 pure-JVM JUnit tests pass. The injected bridge shim was executed
 > headlessly in Node (`node agil/mobile/android/scripts/shim-smoke.mjs`); the Compose wrapper was
 > type-checked against minimal Compose API stubs (not a real Compose compile).
-> See the verification note in [`agil/core/docs/android-sdk.md`](../../core/docs/android-sdk.md).
+> See the verification note in the [Android integration guide](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/android-sdk.md).
 
 ## What it does
 

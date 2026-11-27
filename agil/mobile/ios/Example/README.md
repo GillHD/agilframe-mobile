@@ -1,17 +1,22 @@
 # AgilFrame iOS example
 
+[iOS SDK guide](../README.en.md) · [Руководство по iOS SDK](../README.md)
+
 SwiftUI demo app for `AgilCallsSDK` (the package one directory up). It opens a
 hosted `/embed.html` call, forwards events to a small log, and sends
 mute/camera/chat/theme/leave commands through the native bridge.
 
 ## Run the AgilFrame server
 
-From the repository root:
+From the [AgilFrame Core repository](https://github.com/GillHD/agilframe-core), install
+dependencies and build Core before starting the demo server.
 
 ```bash
+npm ci
+npm run build
 npm run seed
 npm start
-# server: http://localhost:8787 (see agil/core/docs/api.md)
+# Server: http://localhost:8787
 ```
 
 ## Generate/open the Xcode project

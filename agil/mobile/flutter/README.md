@@ -1,5 +1,7 @@
 # agil_calls (Flutter)
 
+Русский · [English](README.en.md)
+
 Flutter-обёртка AgilFrame: `AgilCall` открывает hosted-виджет `/embed.html` в
 WebView, прокидывает события через `postMessage`-мост `AgilBridge` и даёт
 императивный `AgilCallController` для команд (микрофон, камера, чат, тема).
@@ -7,7 +9,7 @@ WebView, прокидывает события через `postMessage`-мост
 > **Статус: P1, WebView-интеграция.** Это не нативный WebRTC-клиент. Медиа, чат,
 > темы и права выполняет веб-виджет на домене AgilFrame; приложение владеет
 > только экраном, навигацией и каналом `AgilBridge`. Ограничения и план перехода
-> на нативный стек — в `agil/core/docs/flutter-sdk.md` (репозиторий AgilFrame).
+> на нативный стек описаны в [руководстве Flutter SDK](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/flutter-sdk.md).
 
 ## Что внутри
 
@@ -17,7 +19,7 @@ WebView, прокидывает события через `postMessage`-мост
 | `lib/src/url.dart` | сборка `/embed.html?...`, разбор ссылок, navigation guard, редакция токенов |
 | `lib/src/bridge.dart` | парсинг/санитайзинг `agil:*`, инжект-скрипты, шим `AgilBridge` |
 | `lib/src/types.dart` | события, ошибки, capabilities, снимок состояния |
-| `test/url_test.dart`, `test/bridge_test.dart` | 33 чистых Dart-тестов (URL/мост) |
+| `test/url_test.dart`, `test/bridge_test.dart` | Тесты разбора URL и работы моста на Dart |
 | `example/lib/main.dart` | демо-приложение: форма входа, кнопки, лог событий |
 
 ## Требования
@@ -35,7 +37,7 @@ WebView, прокидывает события через `postMessage`-мост
 
 ## Установка
 
-Пакет не опубликован в pub.dev. Подключите его путём или git-зависимостью:
+Подключите пакет из локального клона `agilframe-mobile` или через Git:
 
 ```yaml
 # pubspec.yaml приложения
@@ -43,10 +45,10 @@ dependencies:
   flutter:
     sdk: flutter
   agil_calls:
-    path: ../packages/flutter        # локальная копия монорепозитория
+    path: ../agilframe-mobile/agil/mobile/flutter
     # или:
     # git:
-    #   url: https://github.com/agil/video-calls.git
+    #   url: https://github.com/GillHD/agilframe-mobile.git
     #   path: agil/mobile/flutter
 ```
 
@@ -104,8 +106,7 @@ class CallScreen extends StatelessWidget {
 
 ### Откуда взять joinToken
 
-Нового серверного endpoint'а нет. Используйте существующий
-`POST /v1/rooms/:roomId/join` (см. `agil/core/docs/api.md` §4) на своём backend:
+Вызовите `POST /v1/rooms/:roomId/join` со своего бэкенда. [Справочник API](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/api.md#4-join-и-пароли)
 
 ```bash
 curl -s -X POST https://calls.example.com/v1/rooms/daily-sync/join \
@@ -322,4 +323,4 @@ flutter run -d <android-device>
 | `navigation-blocked` | Ссылка ведёт на другой origin; добавьте его в `allowedOrigins` или откройте через `onExternalLink`. |
 | Нет звука в фоне | Ограничение WebView/ОС; нужен нативный аудио-стек/CallKit. |
 
-Полное руководство: `agil/core/docs/flutter-sdk.md` в репозитории AgilFrame.
+[Полное руководство Flutter SDK](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/flutter-sdk.md)

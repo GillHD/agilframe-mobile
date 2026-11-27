@@ -1,14 +1,13 @@
 # AgilCallsSDK (iOS)
 
-Нативный iOS-модуль AgilFrame уровня P1: `WKWebView`-обёртка
-hosted-виджета `/embed.html`, события `ready/joined/left/chat/error/state`,
-команды mute/camera/chat/theme/leave, `AgilClient` для
-`POST /v1/rooms/:id/join`, SwiftUI/UIKit-интеграция и privacy manifest.
+**Русский** · [English](README.en.md)
 
-> **Это не нативный WebRTC-клиент.** Медиа, чат, темы и участники выполняются
-> hosted-виджетом на домене AgilFrame. SDK владеет экраном, мостом, навигацией,
-> разрешениями и REST join-запросом. Ограничения — в
-> [`agil/core/docs/ios-sdk.md`](../../core/docs/ios-sdk.md).
+SDK для iOS открывает виджет AgilFrame `/embed.html` в `WKWebView`.
+В комплекте есть представления SwiftUI и UIKit, мост событий и команд,
+клиент `AgilClient` для `POST /v1/rooms/:id/join` и манифест конфиденциальности.
+
+Виджет обрабатывает медиа, чат, темы и данные участников. SDK управляет экраном,
+навигацией, разрешениями и запросом на вход. [Руководство по iOS SDK](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/ios-sdk.md)
 
 ## Требования
 
@@ -19,17 +18,9 @@ hosted-виджета `/embed.html`, события `ready/joined/left/chat/erro
 
 ## Установка
 
-SwiftPM (Xcode → File → Add Package Dependencies → Add Local…):
-
-```swift
-// Package.swift приложения
-dependencies: [
-    .package(path: "../VideoCalls/packages/ios") // или git URL + from: "0.1.0"
-],
-targets: [
-    .target(name: "App", dependencies: ["AgilCallsSDK"])
-]
-```
+В Xcode выберите **File → Add Package Dependencies → Add Local**. Укажите
+каталог `agil/mobile/ios` в локальной копии Mobile SDK и добавьте продукт
+`AgilCallsSDK` в целевой модуль приложения.
 
 ## Быстрый старт
 
@@ -92,7 +83,7 @@ case .waitingRoom(let ticket):
 каждый `agil:state`. `AgilCallEvent.connection` дедуплицирует reconnect
 (`state`, `attempt`, `delayMs`); `reload()`/`reconnect()` сохраняют
 server/room/join-token, но ротируют bridge nonce. Подробнее:
-[`agil/core/docs/webview-large-rooms.md`](../../core/docs/webview-large-rooms.md).
+[`agil/core/docs/webview-large-rooms.md`](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/webview-large-rooms.md).
 
 ## Что внутри
 
@@ -110,7 +101,7 @@ server/room/join-token, но ротируют bridge nonce. Подробнее:
 | `AgilCall.swift` | SwiftUI `UIViewRepresentable` |
 | `PrivacyInfo.xcprivacy` | privacy manifest: no tracking / no data collection |
 | `Tests/AgilCallsSDKTests` | XCTest конфигурация/URL/redaction/мост/клиент/JSON |
-| `CHANGELOG.md` | изменения 0.1.0 (unreleased); `LICENSE` пока нет — добавьте для standalone-репозитория |
+| [CHANGELOG.md](CHANGELOG.md) | история изменений Swift-пакета |
 | `Example` | SwiftUI demo + XcodeGen spec (`path: ..`) |
 
 ## Сборка и тесты (macOS)
@@ -154,4 +145,4 @@ UI-файлы прошли `swiftc -parse`. Команды выше — для m
   delegate-хука нет: `allowedMediaCapture` не отменяет системный prompt —
   нужны usage strings и проверка разрешений в приложении.
 
-Подробно: [`agil/core/docs/ios-sdk.md`](../../core/docs/ios-sdk.md).
+Подробно: [`agil/core/docs/ios-sdk.md`](https://github.com/GillHD/agilframe-core/blob/main/agil/core/docs/ios-sdk.md).
