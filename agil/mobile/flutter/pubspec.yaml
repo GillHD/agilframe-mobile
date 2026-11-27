@@ -1,0 +1,24 @@
+name: agil_calls
+description: Flutter WebView SDK for the hosted AgilFrame widget (/embed.html) — rooms, chat, themes and events via a postMessage bridge.
+version: 0.1.0
+publish_to: 'none'
+homepage: https://github.com/agil/video-calls
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: '>=3.24.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # WebView shell only: media/chat/themes stay in the hosted widget.
+  webview_flutter: ^4.10.0
+  flutter_inappwebview: ^6.1.5
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+# WebView plugins provide the platform views and Android runtime permissions.

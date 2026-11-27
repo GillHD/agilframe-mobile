@@ -1,0 +1,11 @@
+# Gradle/AGP build outputs (the repo does not commit a wrapper for this module)
+.gradle/
+build/
+*/build/
+local.properties
+.idea/
+*.iml
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/

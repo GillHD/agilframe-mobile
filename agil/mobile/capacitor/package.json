@@ -1,0 +1,73 @@
+{
+  "name": "@agil/calls-capacitor",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Capacitor plugin for the hosted AgilFrame widget — in-app WKWebView/Android WebView or external browser",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/index.js"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "import": "./dist/url.js",
+      "require": "./dist/cjs/url.js",
+      "default": "./dist/url.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "NOTICE",
+    "dist",
+    "ios",
+    "android",
+    "AgilCalls.podspec",
+    "README.md"
+  ],
+  "keywords": [
+    "capacitor",
+    "capacitor-plugin",
+    "agil",
+    "calls",
+    "video",
+    "webrtc",
+    "webview",
+    "ios",
+    "android"
+  ],
+  "scripts": {
+    "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/postbuild.mjs",
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"test/*.test.ts\"",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "@capacitor/core": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/core": "^6.2.0",
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

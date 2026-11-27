@@ -1,0 +1,81 @@
+{
+  "name": "@agil/calls-react-native",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "React Native WebView wrapper for the hosted AgilFrame widget",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/index.js",
+  "react-native": "./dist/cjs/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./dist/cjs/index.js",
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./url": {
+      "types": "./dist/url.d.ts",
+      "import": "./dist/url.js",
+      "require": "./dist/cjs/url.js",
+      "default": "./dist/url.js"
+    },
+    "./bridge": {
+      "types": "./dist/bridge.d.ts",
+      "import": "./dist/bridge.js",
+      "require": "./dist/cjs/bridge.js",
+      "default": "./dist/bridge.js"
+    },
+    "./expo-plugin": "./expo/withAgilCall.cjs",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "NOTICE",
+    "dist",
+    "expo",
+    "README.md"
+  ],
+  "keywords": [
+    "agil",
+    "calls",
+    "video",
+    "webrtc",
+    "react-native",
+    "webview",
+    "expo"
+  ],
+  "scripts": {
+    "build": "npm run clean && tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node scripts/postbuild.mjs",
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test \"test/*.test.ts\"",
+    "prepublishOnly": "npm run typecheck && npm run test && npm run build"
+  },
+  "peerDependencies": {
+    "@expo/config-plugins": ">=7.0.0",
+    "react": ">=18.0.0",
+    "react-native": ">=0.71.0",
+    "react-native-webview": ">=13.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@expo/config-plugins": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    },
+    "react-native-webview": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AgilFrame SDK example</string>
+    <string name="join_call">Join</string>
+    <string name="screen_share_unavailable">Screen sharing is unavailable on this device.</string>
+</resources>

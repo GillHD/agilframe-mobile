@@ -1,0 +1,151 @@
+# CI: iOS SDK (Swift 5.10 / Xcode 15.4, macOS).
+#
+# The package is iOS-only (UIKit/WebKit), so a host `swift test` on macOS is not
+# meaningful: the manifest is validated with `swift package dump-package`, then
+# the library is built for a generic iOS device and its XCTest suite runs on an
+# iOS Simulator via `xcodebuild`.
+#
+# Warnings are intentionally non-fatal: no `-warnings-as-errors` is passed and
+# SWIFT_TREAT_WARNINGS_AS_ERRORS/GCC_TREAT_WARNINGS_AS_ERRORS are disabled.
+#
+# No code signing, no device farm, no TestFlight/App Store upload. No deployment.
+name: CI / iOS
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-ios-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CI: 'true'
+  XCODE_VERSION: '15.4'
+  SWIFT_TREAT_WARNINGS_AS_ERRORS: 'NO'
+  GCC_TREAT_WARNINGS_AS_ERRORS: 'NO'
+
+jobs:
+  ios:
+    name: iOS (Swift 5.10 / Xcode 15.4)
+    runs-on: macos-14
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: agil/mobile/ios
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@ed7a3b1fda3918c0306d1b724322adc0b8cc0a90 # v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+
+      - name: Show toolchain
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          swift --version
+          xcrun simctl list runtimes
+
+      - name: Cache SwiftPM / DerivedData
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            agil/mobile/ios/.build
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-swiftpm-${{ hashFiles('agil/mobile/ios/Package.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-
+
+      - name: Validate package manifest
+        run: |
+          set -euo pipefail
+          mkdir -p .build
+          swift package dump-package | tee .build/package-dump.json
+          swift package describe
+          swift package resolve
+
+      - name: List Xcode schemes and choose the package scheme
+        run: |
+          set -euo pipefail
+          mkdir -p .build
+          xcodebuild -list -json | tee .build/schemes.json
+          SCHEME="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          text = Path(".build/schemes.json").read_text()
+          start = text.find("{")
+          data = json.loads(text[start:]) if start >= 0 else {}
+          schemes = (
+              data.get("package", {}).get("schemes")
+              or data.get("workspace", {}).get("schemes")
+              or data.get("project", {}).get("schemes")
+              or []
+          )
+          preferred = [s for s in schemes if s in ("AgilCallsSDK", "AgilCallsSDK-Package")]
+          print((preferred or schemes or ["AgilCallsSDK"])[0])
+          PY
+          )"
+          echo "Selected scheme: $SCHEME"
+          echo "SCHEME=$SCHEME" >> "$GITHUB_ENV"
+
+      - name: Build for generic iOS device (no signing)
+        run: |
+          set -euo pipefail
+          mkdir -p .build
+          xcodebuild \
+            -scheme "$SCHEME" \
+            -destination 'generic/platform=iOS' \
+            -configuration Debug \
+            -derivedDataPath .build/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            build | tee .build/build.log
+
+      - name: Run XCTest suite on iOS Simulator
+        run: |
+          set -euo pipefail
+          DEVICE_NAME="$(xcrun simctl list devices available \
+            | grep -E '^[[:space:]]+iPhone ' \
+            | head -n 1 \
+            | sed -E 's/^[[:space:]]+//; s/ \([0-9A-F-]{36}\).*$//')"
+          if [ -z "$DEVICE_NAME" ]; then
+            DEVICE_NAME="iPhone 15"
+          fi
+          echo "Simulator: $DEVICE_NAME"
+          # The cached .build directory may contain an old result bundle.
+          rm -rf .build/TestResults.xcresult
+          xcodebuild \
+            -scheme "$SCHEME" \
+            -destination "platform=iOS Simulator,name=$DEVICE_NAME,OS=latest" \
+            -configuration Debug \
+            -derivedDataPath .build/DerivedData \
+            -resultBundlePath .build/TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO \
+            SWIFT_TREAT_WARNINGS_AS_ERRORS=NO \
+            GCC_TREAT_WARNINGS_AS_ERRORS=NO \
+            test | tee .build/test.log
+
+      - name: Upload iOS logs and results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ios-results-${{ github.sha }}
+          path: |
+            agil/mobile/ios/.build/package-dump.json
+            agil/mobile/ios/.build/schemes.json
+            agil/mobile/ios/.build/build.log
+            agil/mobile/ios/.build/test.log
+            agil/mobile/ios/.build/TestResults.xcresult
+          if-no-files-found: warn
+          retention-days: 7

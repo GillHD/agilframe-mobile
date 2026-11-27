@@ -1,0 +1,46 @@
+# XcodeGen spec for the example app.
+#
+#   cd agil/mobile/ios/Example
+#   xcodegen generate
+#   open AgilCallsExample.xcodeproj
+#
+# XcodeGen (https://github.com/yonaskolb/XcodeGen) is optional; Example/README.md
+# documents the equivalent manual Xcode setup.
+name: AgilCallsExample
+
+options:
+  bundleIdPrefix: com.agil
+  deploymentTarget:
+    iOS: "14.3"
+  createIntermediateGroups: true
+
+packages:
+  AgilCallsSDK:
+    # Relative to this spec (agil/mobile/ios/Example): the package root is
+    # agil/mobile/ios. `../..` would point at agil/mobile, which has no Package.swift.
+    path: ..
+
+targets:
+  AgilCallsExample:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.agil.calls.example
+        INFOPLIST_FILE: Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGN_STYLE: Automatic
+    dependencies:
+      - package: AgilCallsSDK
+
+schemes:
+  AgilCallsExample:
+    build:
+      targets:
+        AgilCallsExample: all
+    run:
+      config: Debug

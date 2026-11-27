@@ -1,0 +1,28 @@
+{
+  "name": "agilframe-mobile",
+  "version": "0.1.0",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "agil/mobile/*"
+  ],
+  "scripts": {
+    "build:mobile": "npm run build -w @agil/calls-react-native",
+    "build:capacitor": "npm run build -w @agil/calls-capacitor",
+    "build": "npm run build:mobile && npm run build:capacitor",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm test -w @agil/calls-react-native && npm test -w @agil/calls-capacitor"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/ws": "^8.18.0",
+    "puppeteer-core": "^25.17.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.6"
+  }
+}
